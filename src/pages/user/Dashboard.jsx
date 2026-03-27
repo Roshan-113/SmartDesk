@@ -22,39 +22,39 @@ export default function UserDashboard() {
 
   return (
     <DashboardLayout>
-      <div className="user-container">
+      <div className="user-container animate-fadeIn">
         <div className="page-header">
           <h1 className="page-title">Welcome back, {user?.name}! 👋</h1>
           <p className="page-subtitle">Here's what's happening with your tickets today</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-slideUp">
           <StatCard 
             title="Total Tickets" 
             value={stats.total} 
             icon={Ticket} 
-            gradient="from-blue-500 to-blue-600"
+            gradient="from-blue-600 to-indigo-700"
             trend={12}
           />
           <StatCard 
             title="Open" 
             value={stats.open} 
             icon={Clock} 
-            gradient="from-yellow-500 to-yellow-600"
+            gradient="from-amber-500 to-orange-600"
             trend={-5}
           />
           <StatCard 
             title="In Progress" 
             value={stats.inProgress} 
             icon={AlertCircle} 
-            gradient="from-purple-500 to-purple-600"
+            gradient="from-purple-600 to-pink-600"
             trend={8}
           />
           <StatCard 
             title="Resolved" 
             value={stats.resolved} 
             icon={CheckCircle} 
-            gradient="from-green-500 to-green-600"
+            gradient="from-emerald-500 to-teal-600"
             trend={15}
           />
         </div>
@@ -62,42 +62,44 @@ export default function UserDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 card">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Recent Tickets</h2>
-              <Link to="/user/tickets" className="text-primary-600 hover:text-primary-700 text-sm font-medium">
-                View All →
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent">Recent Tickets</h2>
+              <Link to="/user/tickets" className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all font-semibold shadow-md hover:shadow-lg">
+                <span>View All</span>
+                <span>→</span>
               </Link>
             </div>
             <div className="space-y-3">
-              {recentTickets.map((ticket) => (
+              {recentTickets.map((ticket, index) => (
                 <Link 
                   key={ticket.id}
                   to={`/tickets/${ticket.id}`}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all group"
+                  className="flex items-center justify-between p-5 bg-gradient-to-r from-gray-50 to-blue-50/50 rounded-xl hover:from-blue-50 hover:to-indigo-50 transition-all group border-2 border-transparent hover:border-blue-200 shadow-sm hover:shadow-md"
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-1">
-                      <span className="text-sm font-semibold text-gray-900">#{ticket.id}</span>
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                        ticket.status === 'open' ? 'bg-yellow-100 text-yellow-800' :
-                        ticket.status === 'in-progress' ? 'bg-blue-100 text-blue-800' :
-                        'bg-green-100 text-green-800'
+                    <div className="flex items-center space-x-3 mb-2">
+                      <span className="text-sm font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">#{ticket.id}</span>
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${
+                        ticket.status === 'open' ? 'bg-gradient-to-r from-yellow-100 to-amber-100 text-yellow-800 border border-yellow-300' :
+                        ticket.status === 'in-progress' ? 'bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 border border-blue-300' :
+                        'bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-300'
                       }`}>
                         {ticket.status}
                       </span>
-                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                        ticket.priority === 'urgent' ? 'bg-red-100 text-red-800' :
-                        ticket.priority === 'high' ? 'bg-orange-100 text-orange-800' :
-                        'bg-gray-100 text-gray-800'
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${
+                        ticket.priority === 'urgent' ? 'bg-gradient-to-r from-red-100 to-rose-100 text-red-800 border border-red-300' :
+                        ticket.priority === 'high' ? 'bg-gradient-to-r from-orange-100 to-amber-100 text-orange-800 border border-orange-300' :
+                        'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 border border-gray-300'
                       }`}>
                         {ticket.priority}
                       </span>
                     </div>
-                    <p className="text-gray-700 font-medium group-hover:text-primary-600 transition-colors">
+                    <p className="text-gray-800 font-semibold group-hover:text-blue-700 transition-colors text-lg">
                       {ticket.title}
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">{ticket.time}</p>
+                    <p className="text-xs text-gray-500 mt-2 font-medium">{ticket.time}</p>
                   </div>
-                  <div className="text-gray-400 group-hover:text-primary-600 transition-colors">
+                  <div className="text-gray-400 group-hover:text-blue-600 transition-colors text-2xl font-bold">
                     →
                   </div>
                 </Link>
@@ -106,18 +108,18 @@ export default function UserDashboard() {
           </div>
 
           <div className="space-y-6">
-            <div className="card bg-gradient-to-br from-primary-50 to-purple-50 border border-primary-100">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h3>
+            <div className="card bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border-2 border-blue-100">
+              <h3 className="text-xl font-bold bg-gradient-to-r from-blue-900 to-indigo-900 bg-clip-text text-transparent mb-5">Quick Actions</h3>
               <div className="space-y-3">
                 <Link 
                   to="/user/tickets/create"
-                  className="block w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white px-4 py-3 rounded-lg hover:from-primary-700 hover:to-primary-800 transition-all text-center font-medium shadow-md hover:shadow-lg"
+                  className="block w-full bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white px-5 py-4 rounded-xl hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 transition-all text-center font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   + Create New Ticket
                 </Link>
                 <Link 
                   to="/user/tickets"
-                  className="block w-full bg-white text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-50 transition-all text-center font-medium border border-gray-200"
+                  className="block w-full bg-white text-gray-700 px-5 py-4 rounded-xl hover:bg-gray-50 transition-all text-center font-bold border-2 border-gray-200 hover:border-gray-300 shadow-md hover:shadow-lg"
                 >
                   View All Tickets
                 </Link>
@@ -125,19 +127,19 @@ export default function UserDashboard() {
             </div>
 
             <div className="card">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Support Tips</h3>
-              <ul className="space-y-3 text-sm text-gray-600">
+              <h3 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent mb-5">Support Tips</h3>
+              <ul className="space-y-4 text-sm text-gray-700">
                 <li className="flex items-start">
-                  <span className="text-primary-600 mr-2">•</span>
-                  <span>Provide detailed descriptions for faster resolution</span>
+                  <span className="text-blue-600 mr-3 text-xl font-bold">•</span>
+                  <span className="font-medium">Provide detailed descriptions for faster resolution</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary-600 mr-2">•</span>
-                  <span>Set priority correctly to help us prioritize</span>
+                  <span className="text-blue-600 mr-3 text-xl font-bold">•</span>
+                  <span className="font-medium">Set priority correctly to help us prioritize</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary-600 mr-2">•</span>
-                  <span>Check ticket status regularly for updates</span>
+                  <span className="text-blue-600 mr-3 text-xl font-bold">•</span>
+                  <span className="font-medium">Check ticket status regularly for updates</span>
                 </li>
               </ul>
             </div>
