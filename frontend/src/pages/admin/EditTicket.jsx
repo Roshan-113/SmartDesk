@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 import Button from '../../components/ui/Button'
@@ -8,19 +8,43 @@ import '../../styles/admin.css'
 export default function EditTicket() {
   const { id } = useParams()
   const navigate = useNavigate()
-  
+
   const [formData, setFormData] = useState({
-    title: 'Login issue on mobile app',
-    description: 'Users unable to login using credentials on mobile.',
-    priority: 'high',
-    status: 'in-progress',
+    title: '',
+    description: '',
+    priority: 'medium',
+    status: 'open',
     category: 'technical',
-    assignedTo: 'agent-1'
+    assignedTo: ''
   })
 
+  // ✅ LOAD TICKET FROM LOCALSTORAGE
+  useEffect(() => {
+    const tickets = JSON.parse(localStorage.getItem('tickets')) || []
+
+    const existingTicket = tickets.find(
+      (t) => String(t.id) === String(id)
+    )
+
+    if (existingTicket) {
+      setFormData(existingTicket)
+    }
+  }, [id])
+
+  // ✅ UPDATE TICKET IN LOCALSTORAGE
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('Updating ticket:', formData)
+
+    const tickets = JSON.parse(localStorage.getItem('tickets')) || []
+
+    const updatedTickets = tickets.map((ticket) =>
+      String(ticket.id) === String(id)
+        ? { ...ticket, ...formData }
+        : ticket
+    )
+
+    localStorage.setItem('tickets', JSON.stringify(updatedTickets))
+
     alert('Ticket updated successfully!')
     navigate('/admin/tickets')
   }
@@ -143,7 +167,13 @@ export default function EditTicket() {
               <Save className="w-5 h-5" />
               <span>Save Changes</span>
             </Button>
-            <Button type="button" variant="secondary" onClick={() => navigate(-1)} className="flex items-center space-x-2">
+
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => navigate(-1)}
+              className="flex items-center space-x-2"
+            >
               <X className="w-5 h-5" />
               <span>Cancel</span>
             </Button>

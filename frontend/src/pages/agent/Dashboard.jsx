@@ -1,15 +1,33 @@
+import { useEffect, useState } from 'react'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 import StatCard from '../../components/common/StatCard'
 import { Ticket, Clock, CheckCircle } from 'lucide-react'
 import '../../styles/user.css'
 
-export default function AgentDashboard() {
+export default function Dashboard() {
+
+  const [tickets, setTickets] = useState([])
+
+  // ✅ LOAD FROM LOCALSTORAGE
+  useEffect(() => {
+    const storedTickets = JSON.parse(localStorage.getItem('tickets')) || []
+
+    // 👉 OPTIONAL: filter only assigned tickets
+    // const assignedTickets = storedTickets.filter(t => t.assignedTo === 'Agent 1')
+
+    setTickets(storedTickets)
+  }, [])
+
+  // ✅ DYNAMIC STATS
   const stats = {
-    assigned: 12,
-    inProgress: 5,
-    resolved: 28,
+    assigned: tickets.length,
+    inProgress: tickets.filter(t => t.status === 'in-progress').length,
+    resolved: tickets.filter(t => t.status === 'resolved').length,
     avgResponseTime: '2.3h'
- }
+  }
+
+  // ✅ RECENT TICKETS
+  const recentTickets = tickets.slice(-3).reverse()
 
   return (
     <DashboardLayout>
@@ -41,16 +59,30 @@ export default function AgentDashboard() {
         </div>
 
         <div className="user-card">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Recent Assigned Tickets</h2>
+          <h2 className="text-xl font-bold text-gray-800 mb-4">
+            Recent Assigned Tickets
+          </h2>
+
           <div className="space-y-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            {recentTickets.map((ticket) => (
+              <div key={ticket.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div>
-                  <h3 className="font-semibold text-gray-800">Ticket #{1000 + i}</h3>
-                  <p className="text-sm text-gray-600">Customer reported issue</p>
+                  <h3 className="font-semibold text-gray-800">
+                    Ticket #{ticket.id}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {ticket.title}
+                  </p>
                 </div>
-                <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                  In Progress
+
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                  ticket.status === 'open'
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : ticket.status === 'in-progress'
+                    ? 'bg-blue-100 text-blue-800'
+                    : 'bg-green-100 text-green-800'
+                }`}>
+                  {ticket.status}
                 </span>
               </div>
             ))}

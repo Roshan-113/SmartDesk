@@ -1,18 +1,31 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 import SearchBar from '../../components/common/SearchBar'
 import TicketTable from '../../components/ticket/TicketTable'
 import { Filter } from 'lucide-react'
 import '../../styles/user.css'
 
-export default function AgentTickets() {
+export default function Tickets() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState('all')
+  const [tickets, setTickets] = useState([])
 
-  const tickets = [
-    { id: 1001, title: 'Login issue', status: 'in-progress', priority: 'high', createdAt: '2024-03-20' },
-    { id: 1002, title: 'Payment error', status: 'open', priority: 'urgent', createdAt: '2024-03-19' },
-  ]
+  // ✅ LOAD TICKETS FROM LOCALSTORAGE
+  useEffect(() => {
+    const storedTickets = JSON.parse(localStorage.getItem('tickets')) || []
+
+    // 👉 OPTIONAL: filter only assigned tickets
+    // const assignedTickets = storedTickets.filter(t => t.assignedTo === 'Agent 1')
+
+    setTickets(storedTickets)
+  }, [])
+
+  // ✅ FILTER LOGIC
+  const filteredTickets = tickets.filter((ticket) => {
+    const matchesSearch = ticket.title.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesStatus = filterStatus === 'all' || ticket.status === filterStatus
+    return matchesSearch && matchesStatus
+  })
 
   return (
     <DashboardLayout>
@@ -25,8 +38,13 @@ export default function AgentTickets() {
         <div className="user-card">
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="flex-1">
-              <SearchBar value={searchTerm} onChange={setSearchTerm} placeholder="Search tickets..." />
+              <SearchBar 
+                value={searchTerm} 
+                onChange={setSearchTerm} 
+                placeholder="Search tickets..." 
+              />
             </div>
+
             <div className="flex items-center space-x-2">
               <Filter className="w-5 h-5 text-gray-600" />
               <select
@@ -42,7 +60,8 @@ export default function AgentTickets() {
             </div>
           </div>
 
-          <TicketTable tickets={tickets} />
+          {/* ✅ DYNAMIC DATA FROM LOCALSTORAGE */}
+          <TicketTable tickets={filteredTickets} />
         </div>
       </div>
     </DashboardLayout>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 import SearchBar from '../../components/common/SearchBar'
 import TicketTable from '../../components/ticket/TicketTable'
@@ -8,12 +8,20 @@ import '../../styles/admin.css'
 export default function AllTickets() {
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState('all')
+  const [tickets, setTickets] = useState([])
 
-  const tickets = [
-    { id: 1001, title: 'Login issue', user: 'John Doe', status: 'open', priority: 'high', assignedTo: 'Agent 1', createdAt: '2024-03-20' },
-    { id: 1002, title: 'Payment error', user: 'Jane Smith', status: 'in-progress', priority: 'urgent', assignedTo: 'Agent 2', createdAt: '2024-03-19' },
-    { id: 1003, title: 'Feature request', user: 'Mike Johnson', status: 'open', priority: 'medium', assignedTo: 'Agent 3', createdAt: '2024-03-21' },
-  ]
+  // ✅ LOAD FROM LOCALSTORAGE
+  useEffect(() => {
+    const storedTickets = JSON.parse(localStorage.getItem('tickets')) || []
+    setTickets(storedTickets)
+  }, [])
+
+  // ✅ FILTER LOGIC
+  const filteredTickets = tickets.filter((ticket) => {
+    const matchesSearch = ticket.title.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesStatus = filterStatus === 'all' || ticket.status === filterStatus
+    return matchesSearch && matchesStatus
+  })
 
   return (
     <DashboardLayout>
@@ -26,8 +34,13 @@ export default function AllTickets() {
         <div className="card animate-slideUp">
           <div className="flex flex-col md:flex-row gap-4 mb-6">
             <div className="flex-1">
-              <SearchBar value={searchTerm} onChange={setSearchTerm} placeholder="Search tickets..." />
+              <SearchBar 
+                value={searchTerm} 
+                onChange={setSearchTerm} 
+                placeholder="Search tickets..." 
+              />
             </div>
+
             <div className="flex items-center space-x-3 bg-gradient-to-r from-gray-50 to-blue-50 px-4 py-2 rounded-xl border-2 border-gray-200">
               <Filter className="w-5 h-5 text-blue-600" />
               <select
@@ -43,7 +56,8 @@ export default function AllTickets() {
             </div>
           </div>
 
-          <TicketTable tickets={tickets} />
+          {/* ✅ DYNAMIC DATA */}
+          <TicketTable tickets={filteredTickets} />
         </div>
       </div>
     </DashboardLayout>

@@ -1,8 +1,76 @@
+import { useEffect, useState } from 'react'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 import { TrendingUp, Clock, CheckCircle, AlertCircle } from 'lucide-react'
 import '../../styles/admin.css'
 
 export default function Analytics() {
+
+  const [stats, setStats] = useState({
+    total: 0,
+    resolved: 0,
+    open: 0,
+    avgResponseTime: '2.5h'
+  })
+
+  const [priorityData, setPriorityData] = useState([])
+  const [categoryData, setCategoryData] = useState([])
+
+  useEffect(() => {
+    const tickets = JSON.parse(localStorage.getItem('tickets')) || []
+
+    const total = tickets.length
+    const resolved = tickets.filter(t => t.status === 'resolved').length
+    const open = tickets.filter(t => t.status === 'open').length
+
+    // Priority count
+    const priorityCount = {
+      urgent: 0,
+      high: 0,
+      medium: 0,
+      low: 0
+    }
+
+    // Category count
+    const categoryCount = {
+      technical: 0,
+      billing: 0,
+      feature: 0,
+      other: 0
+    }
+
+    tickets.forEach(ticket => {
+      if (priorityCount[ticket.priority] !== undefined) {
+        priorityCount[ticket.priority]++
+      }
+
+      if (categoryCount[ticket.category] !== undefined) {
+        categoryCount[ticket.category]++
+      }
+    })
+
+    setStats({
+      total,
+      resolved,
+      open,
+      avgResponseTime: '2.5h'
+    })
+
+    setPriorityData([
+      { label: 'Urgent', value: priorityCount.urgent, color: 'bg-red-500' },
+      { label: 'High', value: priorityCount.high, color: 'bg-orange-500' },
+      { label: 'Medium', value: priorityCount.medium, color: 'bg-blue-500' },
+      { label: 'Low', value: priorityCount.low, color: 'bg-gray-500' },
+    ])
+
+    setCategoryData([
+      { label: 'Technical', value: categoryCount.technical, color: 'bg-blue-500' },
+      { label: 'Billing', value: categoryCount.billing, color: 'bg-green-500' },
+      { label: 'Feature Request', value: categoryCount.feature, color: 'bg-purple-500' },
+      { label: 'Other', value: categoryCount.other, color: 'bg-gray-500' },
+    ])
+
+  }, [])
+
   return (
     <DashboardLayout>
       <div className="admin-container">
@@ -19,8 +87,8 @@ export default function Analytics() {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Tickets This Month</p>
-                <p className="text-2xl font-bold text-gray-800">124</p>
-                <p className="text-xs text-green-600">+12% from last month</p>
+                <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
+                <p className="text-xs text-green-600">Live data</p>
               </div>
             </div>
           </div>
@@ -32,8 +100,10 @@ export default function Analytics() {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Resolution Rate</p>
-                <p className="text-2xl font-bold text-gray-800">87%</p>
-                <p className="text-xs text-green-600">+5% improvement</p>
+                <p className="text-2xl font-bold text-gray-800">
+                  {stats.total ? Math.round((stats.resolved / stats.total) * 100) : 0}%
+                </p>
+                <p className="text-xs text-green-600">Auto calculated</p>
               </div>
             </div>
           </div>
@@ -45,8 +115,8 @@ export default function Analytics() {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Avg Response Time</p>
-                <p className="text-2xl font-bold text-gray-800">2.5h</p>
-                <p className="text-xs text-red-600">-0.3h slower</p>
+                <p className="text-2xl font-bold text-gray-800">{stats.avgResponseTime}</p>
+                <p className="text-xs text-gray-500">Static for now</p>
               </div>
             </div>
           </div>
@@ -58,23 +128,19 @@ export default function Analytics() {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Open Tickets</p>
-                <p className="text-2xl font-bold text-gray-800">32</p>
+                <p className="text-2xl font-bold text-gray-800">{stats.open}</p>
                 <p className="text-xs text-orange-600">Needs attention</p>
               </div>
             </div>
           </div>
         </div>
 
+        {/* PRIORITY */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="admin-card">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Tickets by Priority</h2>
             <div className="space-y-4">
-              {[
-                { label: 'Urgent', value: 15, color: 'bg-red-500' },
-                { label: 'High', value: 28, color: 'bg-orange-500' },
-                { label: 'Medium', value: 45, color: 'bg-blue-500' },
-                { label: 'Low', value: 36, color: 'bg-gray-500' },
-              ].map((item) => (
+              {priorityData.map((item) => (
                 <div key={item.label}>
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium text-gray-700">{item.label}</span>
@@ -83,7 +149,7 @@ export default function Analytics() {
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
                       className={`${item.color} h-2 rounded-full`}
-                      style={{ width: `${(item.value / 124) * 100}%` }}
+                      style={{ width: `${stats.total ? (item.value / stats.total) * 100 : 0}%` }}
                     ></div>
                   </div>
                 </div>
@@ -91,15 +157,11 @@ export default function Analytics() {
             </div>
           </div>
 
+          {/* CATEGORY */}
           <div className="admin-card">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Tickets by Category</h2>
             <div className="space-y-4">
-              {[
-                { label: 'Technical', value: 52, color: 'bg-blue-500' },
-                { label: 'Billing', value: 28, color: 'bg-green-500' },
-                { label: 'Feature Request', value: 24, color: 'bg-purple-500' },
-                { label: 'Other', value: 20, color: 'bg-gray-500' },
-              ].map((item) => (
+              {categoryData.map((item) => (
                 <div key={item.label}>
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium text-gray-700">{item.label}</span>
@@ -108,7 +170,7 @@ export default function Analytics() {
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
                       className={`${item.color} h-2 rounded-full`}
-                      style={{ width: `${(item.value / 124) * 100}%` }}
+                      style={{ width: `${stats.total ? (item.value / stats.total) * 100 : 0}%` }}
                     ></div>
                   </div>
                 </div>
@@ -123,6 +185,7 @@ export default function Analytics() {
             <p className="text-gray-500">Chart visualization would go here</p>
           </div>
         </div>
+
       </div>
     </DashboardLayout>
   )

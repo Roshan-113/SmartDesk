@@ -16,17 +16,47 @@ export default function CreateTicket() {
     attachments: []
   })
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      await ticketService.createTicket(formData)
-      alert('Ticket created successfully!')
-      navigate('/user/tickets')
-    } catch (error) {
-      console.error('Error creating ticket:', error)
-    }
-  }
+const handleSubmit = async (e) => {
+  e.preventDefault()
+  try {
+    const response = await ticketService.createTicket(formData)
 
+    const createdTicketId =
+      response?.data?.id ||
+      response?.data?._id ||
+      response?.data?.ticket?.id ||
+      response?.data?.data?.id ||
+      response?.data?.data?._id
+
+    if (!createdTicketId) {
+      console.error(response.data)
+      throw new Error('Created ticket ID not returned from API')
+    }
+
+    // ✅ 🔥 ADD THIS BLOCK (IMPORTANT)
+    const newTicket = {
+      id: createdTicketId,
+      title: formData.title,
+      status: 'open',
+      priority: formData.priority,
+      category: formData.category,
+      createdAt: new Date().toISOString().split('T')[0],
+      assignedTo: 'Not Assigned'
+    }
+
+    const existingTickets = JSON.parse(localStorage.getItem('tickets')) || []
+    existingTickets.push(newTicket)
+    localStorage.setItem('tickets', JSON.stringify(existingTickets))
+    // ✅ END
+
+    alert('Ticket created successfully!')
+    navigate(`/tickets/${createdTicketId}`)
+
+  } catch (error) {
+    console.error('Error creating ticket:', error)
+    alert('Failed to create ticket. Please try again.')
+  }
+}
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
