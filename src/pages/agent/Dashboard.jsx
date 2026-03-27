@@ -9,7 +9,7 @@ export default function AgentDashboard() {
     inProgress: 5,
     resolved: 28,
     avgResponseTime: '2.3h'
-  }
+ }
 
   return (
     <DashboardLayout>
