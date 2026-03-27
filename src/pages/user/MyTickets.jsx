@@ -10,10 +10,10 @@ export default function MyTickets() {
   const [filterStatus, setFilterStatus] = useState('all')
 
   const tickets = [
-    { id: 1001, title: 'Login issue', status: 'open', priority: 'high', createdAt: '2024-03-20' },
-    { id: 1002, title: 'Payment not processing', status: 'in-progress', priority: 'urgent', createdAt: '2024-03-19' },
-    { id: 1003, title: 'Feature request', status: 'resolved', priority: 'low', createdAt: '2024-03-18' },
-    { id: 1004, title: 'Bug in dashboard', status: 'open', priority: 'medium', createdAt: '2024-03-17' },
+    { id: 1001, title: 'Login issue', status: 'open', priority: 'high', createdAt: '2024-03-20', assignedTo: 'Agent 1' },
+    { id: 1002, title: 'Payment not processing', status: 'in-progress', priority: 'urgent', createdAt: '2024-03-19', assignedTo: 'Agent 2' },
+    { id: 1003, title: 'Feature request', status: 'resolved', priority: 'low', createdAt: '2024-03-18', assignedTo: 'Agent 3' },
+    { id: 1004, title: 'Bug in dashboard', status: 'open', priority: 'medium', createdAt: '2024-03-17', assignedTo: 'Agent 1' },
   ]
 
   return (
