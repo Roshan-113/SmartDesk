@@ -9,7 +9,8 @@ export default function Register() {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role: 'user'
   })
   const [agreeTerms, setAgreeTerms] = useState(false)
   const { login } = useAuth()
@@ -32,9 +33,14 @@ export default function Register() {
       const { user, token } = await authService.register(formData)
       localStorage.setItem('token', token)
       login(user)
-      navigate('/user/dashboard')
+      
+      // Navigate based on role
+      if (user.role === 'admin') navigate('/admin/dashboard')
+      else if (user.role === 'agent') navigate('/agent/dashboard')
+      else navigate('/user/dashboard')
     } catch (error) {
       console.error('Registration failed:', error)
+      alert('Registration failed. Please try again.')
     }
   }
 
@@ -109,6 +115,21 @@ export default function Register() {
                   placeholder="Enter your email"
                   required
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Register As</label>
+                <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border-b-2 border-gray-300 focus:border-blue-600 outline-none transition-colors bg-transparent text-gray-800"
+                  required
+                >
+                  <option value="user">User (Customer)</option>
+                  <option value="agent">Agent (Support Staff)</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">Select your role. Admin accounts are created by existing admins.</p>
               </div>
 
               <div>

@@ -22,6 +22,32 @@ export default function Login() {
       else navigate('/user/dashboard')
     } catch (error) {
       console.error('Login failed:', error)
+      alert('Login failed. Please check your credentials.')
+    }
+  }
+
+  const handleQuickLogin = async (role) => {
+    const credentials = {
+      admin: { email: 'admin@example.com', password: 'password123' },
+      agent: { email: 'agent@example.com', password: 'password123' },
+      user: { email: 'user@example.com', password: 'password123' }
+    }
+    
+    const { email, password } = credentials[role]
+    setEmail(email)
+    setPassword(password)
+    
+    try {
+      const { user, token } = await authService.login(email, password)
+      localStorage.setItem('token', token)
+      login(user)
+      
+      if (user.role === 'admin') navigate('/admin/dashboard')
+      else if (user.role === 'agent') navigate('/agent/dashboard')
+      else navigate('/user/dashboard')
+    } catch (error) {
+      console.error('Login failed:', error)
+      alert('Login failed. Please try again.')
     }
   }
 
@@ -113,9 +139,20 @@ export default function Login() {
               </div>
             </form>
 
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200 text-xs text-gray-700">
+            <div className="mt-6 text-center">
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('admin')}
+                className="text-sm text-blue-600 hover:text-blue-800 font-semibold underline"
+              >
+                Admin Login
+              </button>
+            </div>
+
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200 text-xs text-gray-700">
               <p className="font-bold mb-1 text-blue-900">Demo Accounts:</p>
               <p className="font-semibold">user@example.com | agent@example.com | admin@example.com</p>
+              <p className="text-gray-600 mt-1">Password: <span className="text-blue-700 font-semibold">password123</span></p>
             </div>
           </div>
         </div>
