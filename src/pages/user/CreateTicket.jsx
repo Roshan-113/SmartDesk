@@ -12,7 +12,8 @@ export default function CreateTicket() {
     title: '',
     description: '',
     priority: 'medium',
-    category: 'technical'
+    category: 'technical',
+    attachments: []
   })
 
   const handleSubmit = async (e) => {
