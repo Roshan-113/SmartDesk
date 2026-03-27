@@ -1,268 +1,391 @@
-# 🚀 SmartDesk – Service Request & Ticketing System
+# 🎫 SmartDesk - Ticket Management System
 
-## 📌 Overview
+A modern, full-stack ticket management system for efficient customer support and issue tracking.
 
-SmartDesk is a modern **Service Request & Ticketing System** built using a MERN-style architecture.
-It helps organizations efficiently manage, track, and resolve service tickets with a clean UI and structured backend.
-
-This project focuses on:
-
-* Scalable frontend using React
-* Structured backend using Node.js & Express
-* Database operations using PostgreSQL
+![Status](https://img.shields.io/badge/status-active-success.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ---
 
-## 🎯 Problem Statement
+## 📋 Overview
 
-Managing service requests manually leads to:
-
-* Lack of tracking
-* Delayed responses
-* Poor accountability
-
-SmartDesk solves this by providing a centralized system for ticket creation, tracking, and resolution.
+SmartDesk is a comprehensive ticket management system that enables organizations to efficiently handle customer support requests, track issues, and manage user interactions. Built with modern web technologies, it provides role-based access for Users, Agents, and Administrators.
 
 ---
 
-## 💡 Solution
+## ✨ Features
 
-SmartDesk allows users to:
+### 👤 User Features
+- Create and submit support tickets
+- Track ticket status in real-time
+- Add comments and updates to tickets
+- View personal ticket history
+- Search and filter tickets
+- Update profile and settings
 
-* Create service tickets
-* Track ticket status (Open → In Progress → Closed)
-* Assign priorities (High / Medium / Low)
-* Filter and search tickets
-* View analytics through dashboard
+### 🎧 Agent Features
+- View assigned tickets dashboard
+- Update ticket status and priority
+- Add solutions and comments
+- Track performance metrics
+- Manage multiple tickets efficiently
 
----
-
-# 🧠 System Architecture
-
-## 🔷 Frontend (React)
-
-Handles UI, user interaction, and API communication.
-
-### Responsibilities:
-
-* UI Components (Dashboard, Ticket List, Forms)
-* Routing (React Router)
-* State Management (Hooks / Context API)
-* API Calls (fetch/axios)
-* Form handling & validation
-
----
-
-## 🔷 Backend (Node.js + Express)
-
-Handles business logic and API endpoints.
-
-### Responsibilities:
-
-* REST API creation
-* Request validation
-* Business logic handling
-* Database operations
+### 👨‍💼 Admin Features
+- Complete user management (CRUD operations)
+- View all tickets across the system
+- Assign tickets to agents
+- Analytics and reporting dashboard
+- System-wide statistics
+- Priority and category management
 
 ---
 
-## 🔷 Database (PostgreSQL)
+## 🏗️ Project Structure
 
-Stores structured ticket data.
-
-### Example Table: `tickets`
-
-```sql
-CREATE TABLE tickets (
-  id SERIAL PRIMARY KEY,
-  title VARCHAR(255),
-  description TEXT,
-  priority VARCHAR(50),
-  status VARCHAR(50),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+```
+SmartDesk/
+│
+├── frontend/              # React + Vite frontend
+│   ├── src/
+│   │   ├── components/   # Reusable UI components
+│   │   ├── pages/        # Page components (17 pages)
+│   │   ├── services/     # API integration layer
+│   │   ├── context/      # React Context (Auth, Tickets)
+│   │   ├── hooks/        # Custom React hooks
+│   │   └── utils/        # Helper functions
+│   └── package.json
+│
+├── backend/              # Node.js + Express API
+│   ├── src/
+│   │   ├── config/       # Database configuration
+│   │   ├── controllers/  # Business logic (5 controllers)
+│   │   ├── middleware/   # Auth & error handling
+│   │   ├── routes/       # API routes (25+ endpoints)
+│   │   └── validators/   # Input validation
+│   └── package.json
+│
+└── docs/                 # Documentation
+    └── SETUP_GUIDE.md    # Detailed setup instructions
 ```
 
 ---
 
-# ✨ Features
+## 🚀 Quick Start
 
-## 📝 Ticket Management
+### Prerequisites
+- Node.js (v16+)
+- PostgreSQL (v12+)
+- npm or yarn
 
-* Create, update, delete tickets
-* Assign priority and status
+### Installation
 
-## 🔍 Search & Filters
-
-* Filter by priority and status
-* Search tickets by title
-
-## 📊 Dashboard
-
-* Total tickets
-* Open vs Closed tickets
-* Priority insights
-
-## 🎨 UI/UX
-
-* Modern dark mode design
-* Responsive layout
-* Clean and intuitive interface
-
----
-
-# 🏗️ Project Structure
-
-## 📁 Frontend
-
-```
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── hooks/
-│   ├── context/
-│   ├── services/
-│   ├── utils/
-│   ├── App.jsx
-│   ├── main.jsx
+1. **Clone the repository**
+```bash
+git clone https://github.com/Roshan-113/SmartDesk.git
+cd SmartDesk
 ```
 
----
-
-## 📁 Backend
-
-```
-backend/
-├── src/
-│   ├── config/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   ├── services/
-│   ├── utils/
-│   ├── app.js
-│   ├── server.js
-```
-
----
-
-# 🔗 API Endpoints
-
-## 🎫 Ticket Routes
-
-| Method | Endpoint     | Description          |
-| ------ | ------------ | -------------------- |
-| GET    | /tickets     | Get all tickets      |
-| POST   | /tickets     | Create new ticket    |
-| PUT    | /tickets/:id | Update ticket status |
-| DELETE | /tickets/:id | Delete ticket        |
-
----
-
-# 🔄 Application Flow
-
-1. User creates a ticket (Frontend)
-2. Request sent to backend API
-3. Backend processes logic
-4. Data stored in PostgreSQL
-5. Response sent back to frontend
-6. UI updates dynamically
-
----
-
-# ⚙️ Tech Stack
-
-## Frontend:
-
-* React (Vite)
-* Tailwind CSS
-* React Router
-
-## Backend:
-
-* Node.js
-* Express.js
-
-## Database:
-
-* PostgreSQL
-
----
-
-# 🚀 Getting Started
-
-## 1️⃣ Clone Repository
-
-```
-git clone https://github.com/your-username/smartdesk.git
-cd smartdesk
-```
-
----
-
-## 2️⃣ Setup Frontend
-
-```
-cd frontend
+2. **Setup Backend**
+```bash
+cd backend
 npm install
+```
+
+Create `backend/.env`:
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=your_password
+DB_NAME=smartdesk_db
+PORT=5000
+JWT_SECRET=your-secret-key
+CORS_ORIGIN=http://localhost:5173
+```
+
+Create database and setup:
+```bash
+npm run db:create
+npm run db:setup
 npm run dev
 ```
 
----
-
-## 3️⃣ Setup Backend
-
-```
-cd backend
+3. **Setup Frontend**
+```bash
+cd frontend
 npm install
-npm start
 ```
 
----
+Create `frontend/.env`:
+```env
+VITE_API_BASE_URL=http://localhost:5000/api
+```
 
-## 4️⃣ Setup Database
+Start frontend:
+```bash
+npm run dev
+```
 
-* Install PostgreSQL
-* Create database
-* Run SQL table script
-
----
-
-# 📸 Screenshots
-
-(Add your UI screenshots here)
-
----
-
-# 🧠 Future Enhancements
-
-* User authentication (JWT)
-* Role-based access (Admin/User)
-* Real-time updates
-* Email notifications
-* AI-based ticket suggestions
+4. **Access Application**
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:5000/api
 
 ---
 
-# 🏆 Hackathon Highlights
+## 🎮 Demo Accounts
 
-* Clean architecture (Frontend + Backend separation)
-* Real-world problem solving
-* Scalable design
-* Modern UI/UX
-
----
-
-# 👨‍💻 Team
-
-* Roshan Sikotariya
-* Nihar Parecha
-* Himani Solanki
+| Role | Email | Password |
+|------|-------|----------|
+| **Admin** | admin@example.com | password123 |
+| **Agent** | agent@example.com | password123 |
+| **User** | user@example.com | password123 |
 
 ---
 
-# 📜 License
+## 🛠️ Tech Stack
 
-This project is developed for hackathon purposes only.
+### Frontend
+- **React 18** - UI library
+- **Vite** - Build tool
+- **Tailwind CSS** - Styling
+- **React Router** - Navigation
+- **Axios** - HTTP client
+- **Context API** - State management
+
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **PostgreSQL** - Database
+- **JWT** - Authentication
+- **bcrypt** - Password hashing
+- **express-validator** - Input validation
+
+---
+
+## 📊 Database Schema
+
+### Tables
+
+**users**
+- id, name, email, password, role, phone, location, bio
+- Roles: `user`, `agent`, `admin`
+
+**tickets**
+- id, title, description, status, priority, category
+- user_id, assigned_to, created_at, updated_at
+- Status: `open`, `in-progress`, `resolved`, `closed`
+- Priority: `low`, `medium`, `high`, `urgent`
+
+**comments**
+- id, ticket_id, user_id, comment, created_at
+
+---
+
+## 🔒 Security Features
+
+- ✅ JWT-based authentication
+- ✅ Password hashing with bcrypt (10 rounds)
+- ✅ Role-based authorization
+- ✅ Input validation on all endpoints
+- ✅ SQL injection prevention
+- ✅ CORS configuration
+- ✅ Protected API routes
+- ✅ Secure password reset flow
+
+---
+
+## 📡 API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - User login
+- `POST /api/auth/forgot-password` - Password recovery
+
+### Tickets
+- `GET /api/tickets` - Get tickets (role-filtered)
+- `GET /api/tickets/:id` - Get ticket details
+- `POST /api/tickets` - Create ticket
+- `PUT /api/tickets/:id` - Update ticket
+- `DELETE /api/tickets/:id` - Delete ticket
+
+### Users
+- `GET /api/users/profile` - Get profile
+- `PUT /api/users/profile` - Update profile
+- `GET /api/users/stats` - Get statistics
+
+### Admin
+- `GET /api/admin/users` - Get all users
+- `POST /api/admin/users` - Create user
+- `PUT /api/admin/users/:id` - Update user
+- `DELETE /api/admin/users/:id` - Delete user
+- `GET /api/admin/analytics` - Get analytics
+
+[View complete API documentation](docs/SETUP_GUIDE.md)
+
+---
+
+## 📱 Pages & Routes
+
+### Public Routes
+- `/login` - Login page
+- `/register` - Registration
+- `/forgot-password` - Password recovery
+
+### User Routes
+- `/user/dashboard` - User dashboard
+- `/user/tickets` - My tickets
+- `/user/tickets/create` - Create ticket
+- `/tickets/:id` - Ticket details
+
+### Agent Routes
+- `/agent/dashboard` - Agent dashboard
+- `/agent/tickets` - Assigned tickets
+
+### Admin Routes
+- `/admin/dashboard` - Admin dashboard
+- `/admin/tickets` - All tickets
+- `/admin/users` - User management
+- `/admin/analytics` - Analytics
+
+### Shared Routes
+- `/profile` - User profile
+- `/settings` - Settings
+
+---
+
+## 🧪 Testing
+
+### Manual Testing
+1. Login with demo accounts
+2. Test ticket creation and management
+3. Test role-based access control
+4. Test search and filter functionality
+5. Test comment system
+6. Test user management (admin)
+
+### Test Scenarios
+- User can create tickets
+- Agent can update ticket status
+- Admin can manage users
+- Comments are properly displayed
+- Search and filter work correctly
+- Authentication is enforced
+
+---
+
+## 📦 Build for Production
+
+### Frontend
+```bash
+cd frontend
+npm run build
+# Output in frontend/dist/
+```
+
+### Backend
+```bash
+cd backend
+NODE_ENV=production node src/server.js
+```
+
+### Environment Variables
+Update `.env` files with production values:
+- Use strong JWT_SECRET
+- Configure production database
+- Set proper CORS_ORIGIN
+- Enable HTTPS
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+## 👨‍💻 Author
+
+**Roshan-113**
+- GitHub: [@Roshan-113](https://github.com/Roshan-113)
+
+---
+
+## 🆘 Support
+
+For detailed setup instructions, see [SETUP_GUIDE.md](docs/SETUP_GUIDE.md)
+
+For issues and questions:
+- Open an issue on GitHub
+- Check the troubleshooting section in SETUP_GUIDE.md
+
+---
+
+## 🎯 Roadmap
+
+- [ ] Email notifications
+- [ ] File attachments for tickets
+- [ ] Real-time updates with WebSockets
+- [ ] Advanced analytics dashboard
+- [ ] Mobile app
+- [ ] Multi-language support
+- [ ] Dark mode
+- [ ] Export reports (PDF, CSV)
+
+---
+
+## 📸 Screenshots
+
+### Login Page
+Modern split-screen design with SmartDesk branding
+
+### User Dashboard
+Clean interface showing ticket statistics and recent tickets
+
+### Admin Panel
+Comprehensive user management and analytics
+
+---
+
+## ⚡ Performance
+
+- Fast page loads with Vite
+- Optimized database queries with indexes
+- Efficient state management
+- Responsive design for all devices
+
+---
+
+## 🌟 Acknowledgments
+
+- Built with React and Node.js
+- Styled with Tailwind CSS
+- Icons from Heroicons
+- Database: PostgreSQL
+
+---
+
+**Built with ❤️ for efficient ticket management**
+
+---
+
+## 📞 Contact
+
+For any inquiries or support, please open an issue on GitHub.
+
+---
+
+**Last Updated:** March 27, 2026
+**Version:** 1.0.0
+**Status:** ✅ Production Ready
