@@ -7,7 +7,8 @@ export default function AgentDashboard() {
   const stats = {
     assigned: 12,
     inProgress: 5,
-    resolved: 28
+    resolved: 28,
+    avgResponseTime: '2.3h'
   }
 
   return (
