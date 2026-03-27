@@ -11,6 +11,7 @@ export default function UserManagement() {
   const users = [
     { id: 1, name: 'John Doe', email: 'john@example.com', role: 'user', tickets: 5, status: 'active' },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'user', tickets: 8, status: 'active' },
+    { id: 3, name: 'Mike Johnson', email: 'mike@example.com', role: 'agent', tickets: 12, status: 'active' },
   ]
 
   return (
