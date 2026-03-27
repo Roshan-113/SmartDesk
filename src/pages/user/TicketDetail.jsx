@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import DashboardLayout from '../../layouts/DashboardLayout'
-import { ArrowLeft, Send, Clock, User } from 'lucide-react'
+import DashboardLayout from '../../components/layout/DashboardLayout'
+import Badge from '../../components/ui/Badge'
+import { ArrowLeft, Send, User } from 'lucide-react'
+import { getStatusColor, getPriorityColor } from '../../utils/helpers'
 
 export default function TicketDetail() {
   const { id } = useParams()
@@ -34,78 +36,81 @@ export default function TicketDetail() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-4xl space-y-6">
+      <div className="max-w-4xl space-y-6 animate-fadeIn">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center space-x-2 text-gray-600 hover:text-gray-800"
+          className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:text-white bg-white hover:bg-gradient-to-r hover:from-gray-700 hover:to-gray-800 border-2 border-gray-200 hover:border-gray-700 rounded-xl transition-all duration-300 font-semibold shadow-md hover:shadow-lg"
         >
           <ArrowLeft className="w-5 h-5" />
           <span>Back</span>
         </button>
 
-        <div className="card">
+        <div className="card animate-slideUp">
           <div className="flex items-start justify-between mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">Ticket #{ticket.id}</h1>
-              <p className="text-gray-600 mt-1">{ticket.title}</p>
+              <h1 className="text-3xl font-extrabold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent">
+                Ticket #{ticket.id}
+              </h1>
+              <p className="text-gray-700 mt-2 text-lg font-semibold">{ticket.title}</p>
             </div>
-            <span className="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-              {ticket.status}
-            </span>
+            <Badge className={getStatusColor(ticket.status)}>{ticket.status}</Badge>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6 p-4 bg-gradient-to-r from-gray-50 to-blue-50/50 rounded-xl border-2 border-gray-100">
             <div>
-              <p className="text-sm text-gray-600">Priority</p>
-              <p className="font-semibold text-gray-800 capitalize">{ticket.priority}</p>
+              <p className="text-xs text-gray-600 font-bold uppercase tracking-wider mb-2">Priority</p>
+              <Badge className={getPriorityColor(ticket.priority)}>{ticket.priority}</Badge>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Category</p>
-              <p className="font-semibold text-gray-800 capitalize">{ticket.category}</p>
+              <p className="text-xs text-gray-600 font-bold uppercase tracking-wider mb-2">Category</p>
+              <p className="font-bold text-gray-800 capitalize text-sm">{ticket.category}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Created</p>
-              <p className="font-semibold text-gray-800">{ticket.createdAt}</p>
+              <p className="text-xs text-gray-600 font-bold uppercase tracking-wider mb-2">Created</p>
+              <p className="font-bold text-gray-800 text-sm">{ticket.createdAt}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Assigned To</p>
-              <p className="font-semibold text-gray-800">{ticket.assignedTo}</p>
+              <p className="text-xs text-gray-600 font-bold uppercase tracking-wider mb-2">Assigned To</p>
+              <p className="font-bold text-gray-800 text-sm">{ticket.assignedTo}</p>
             </div>
           </div>
 
-          <div className="border-t pt-6">
-            <h3 className="font-semibold text-gray-800 mb-2">Description</h3>
-            <p className="text-gray-700">{ticket.description}</p>
+          <div className="border-t-2 border-gray-100 pt-6">
+            <h3 className="font-bold text-gray-900 mb-3 text-lg">Description</h3>
+            <p className="text-gray-700 leading-relaxed font-medium">{ticket.description}</p>
           </div>
         </div>
 
-        <div className="card">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Comments</h2>
+        <div className="card animate-slideUp" style={{ animationDelay: '100ms' }}>
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-blue-900 bg-clip-text text-transparent mb-6">Comments & Updates</h2>
           <div className="space-y-4 mb-6">
-            {comments.map((comment) => (
-              <div key={comment.id} className="bg-gray-50 rounded-lg p-4">
-                <div className="flex items-center space-x-2 mb-2">
-                  <User className="w-4 h-4 text-gray-600" />
-                  <span className="font-semibold text-gray-800">{comment.author}</span>
-                  <span className="text-sm text-gray-500">• {comment.timestamp}</span>
+            {comments.map((comment, index) => (
+              <div key={comment.id} className="bg-gradient-to-r from-gray-50 to-blue-50/30 rounded-xl p-5 border-2 border-gray-100 hover:border-blue-200 transition-all shadow-sm hover:shadow-md" style={{ animationDelay: `${index * 50}ms` }}>
+                <div className="flex items-center space-x-3 mb-3">
+                  <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-2 rounded-lg">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="font-bold text-gray-900">{comment.author}</span>
+                  <span className="text-sm text-gray-500 font-medium">• {comment.timestamp}</span>
                 </div>
-                <p className="text-gray-700">{comment.text}</p>
+                <p className="text-gray-700 font-medium ml-11">{comment.text}</p>
               </div>
             ))}
           </div>
 
-          <form onSubmit={handleAddComment} className="space-y-4">
+          <form onSubmit={handleAddComment} className="space-y-4 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-100">
+            <label className="block text-sm font-bold text-gray-800 mb-2">Add Your Comment</label>
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               className="input-field"
-              rows="3"
-              placeholder="Add a comment..."
+              rows="4"
+              placeholder="Share your thoughts or updates..."
               required
             />
             <button type="submit" className="btn-primary flex items-center space-x-2">
-              <Send className="w-4 h-4" />
-              <span>Add Comment</span>
+              <Send className="w-5 h-5" />
+              <span>Post Comment</span>
             </button>
           </form>
         </div>

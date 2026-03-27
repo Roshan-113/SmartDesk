@@ -6,6 +6,7 @@ import { USER_ROLES } from '../utils/constants'
 // Auth Pages
 import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
+import ForgotPassword from '../pages/auth/ForgotPassword'
 
 // User Pages
 import UserDashboard from '../pages/user/Dashboard'
@@ -21,10 +22,13 @@ import AdminDashboard from '../pages/admin/Dashboard'
 import AllTickets from '../pages/admin/AllTickets'
 import UserManagement from '../pages/admin/UserManagement'
 import Analytics from '../pages/admin/Analytics'
+import EditTicket from '../pages/admin/EditTicket'
 
 // Shared Pages
 import TicketDetail from '../pages/shared/TicketDetail'
 import Unauthorized from '../pages/shared/Unauthorized'
+import Profile from '../pages/shared/Profile'
+import Settings from '../pages/shared/Settings'
 
 export default function AppRoutes() {
   return (
@@ -32,6 +36,7 @@ export default function AppRoutes() {
       {/* Public Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
       
       {/* User Routes */}
@@ -84,11 +89,26 @@ export default function AppRoutes() {
           <Analytics />
         </RoleRoute>
       } />
+      <Route path="/admin/tickets/:id/edit" element={
+        <RoleRoute allowedRoles={[USER_ROLES.ADMIN]}>
+          <EditTicket />
+        </RoleRoute>
+      } />
       
       {/* Shared Routes */}
       <Route path="/tickets/:id" element={
         <PrivateRoute>
           <TicketDetail />
+        </PrivateRoute>
+      } />
+      <Route path="/profile" element={
+        <PrivateRoute>
+          <Profile />
+        </PrivateRoute>
+      } />
+      <Route path="/settings" element={
+        <PrivateRoute>
+          <Settings />
         </PrivateRoute>
       } />
       

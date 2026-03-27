@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { authService } from '../../services/authService'
-import { UserPlus } from 'lucide-react'
-import '../../styles/auth.css'
+import SmartDeskLogo from '../../components/common/SmartDeskLogo'
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -12,6 +11,7 @@ export default function Register() {
     password: '',
     confirmPassword: ''
   })
+  const [agreeTerms, setAgreeTerms] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
 
@@ -20,6 +20,11 @@ export default function Register() {
     
     if (formData.password !== formData.confirmPassword) {
       alert('Passwords do not match')
+      return
+    }
+
+    if (!agreeTerms) {
+      alert('Please agree to Terms & Conditions')
       return
     }
     
@@ -38,88 +43,124 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8 animate-fadeIn">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl shadow-2xl mb-4 transform hover:scale-110 transition-transform duration-300">
-            <UserPlus className="w-10 h-10 text-white" strokeWidth={2.5} />
-          </div>
-          <h1 className="text-4xl font-black bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 bg-clip-text text-transparent mb-2">Create Account</h1>
-          <p className="text-gray-600 text-lg font-medium">Join our ticketing system</p>
+    <div className="min-h-screen flex">
+      {/* Left Side - Blue Welcome Section */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 relative overflow-hidden">
+        {/* Wavy Edge */}
+        <div className="absolute right-0 top-0 bottom-0 w-32">
+          <svg className="h-full w-full" viewBox="0 0 100 1000" preserveAspectRatio="none">
+            <path d="M0,0 Q50,50 0,100 T0,200 T0,300 T0,400 T0,500 T0,600 T0,700 T0,800 T0,900 T0,1000 L100,1000 L100,0 Z" 
+                  fill="white" opacity="0.1"/>
+            <path d="M20,0 Q70,50 20,100 T20,200 T20,300 T20,400 T20,500 T20,600 T20,700 T20,800 T20,900 T20,1000 L100,1000 L100,0 Z" 
+                  fill="white" opacity="0.05"/>
+          </svg>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border-2 border-white/50 animate-slideUp">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-bold text-gray-800 mb-2">
-                Full Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="input-field"
-                placeholder="John Doe"
-                required
-              />
+        {/* Content */}
+        <div className="flex flex-col items-center justify-center w-full px-12 relative z-10">
+          <div className="text-center">
+            <h2 className="text-5xl font-bold text-white mb-8">Welcome to</h2>
+            
+            {/* Logo */}
+            <div className="flex justify-center mb-6">
+              <div className="bg-white p-6 rounded-full shadow-2xl">
+                <SmartDeskLogo size="w-32 h-32" />
+              </div>
             </div>
-
-            <div>
-              <label className="block text-sm font-bold text-gray-800 mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="input-field"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-gray-800 mb-2">
-                Password
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="input-field"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-gray-800 mb-2">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="input-field"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-
-            <button type="submit" className="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white px-6 py-4 rounded-xl hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 font-bold text-lg">
-              Create Account
-            </button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600 font-medium">
-              Already have an account?{' '}
-              <Link to="/login" className="text-blue-600 hover:text-blue-800 font-bold hover:underline">Sign in</Link>
+            
+            <h1 className="text-6xl font-black text-white mb-8">SmartDesk</h1>
+            
+            <p className="text-blue-100 text-lg max-w-md mx-auto leading-relaxed">
+              Your intelligent support platform for managing tickets, tracking issues, and delivering exceptional customer service.
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Side - Register Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
+        <div className="w-full max-w-md">
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">Create your account</h2>
+            <p className="text-gray-500 mb-8">Join SmartDesk today</p>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border-b-2 border-gray-300 focus:border-blue-600 outline-none transition-colors bg-transparent text-gray-800"
+                  placeholder="Enter your name"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">E-mail Address</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border-b-2 border-gray-300 focus:border-blue-600 outline-none transition-colors bg-transparent text-gray-800"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border-b-2 border-gray-300 focus:border-blue-600 outline-none transition-colors bg-transparent text-gray-800"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border-b-2 border-gray-300 focus:border-blue-600 outline-none transition-colors bg-transparent text-gray-800"
+                  placeholder="Confirm your password"
+                  required
+                />
+              </div>
+
+              <div className="flex items-center">
+                <input 
+                  type="checkbox" 
+                  checked={agreeTerms}
+                  onChange={(e) => setAgreeTerms(e.target.checked)}
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" 
+                />
+                <span className="ml-2 text-sm text-gray-600">
+                  Signing up, I agree with <a href="#" className="text-blue-600 hover:text-blue-800 font-semibold">Terms & Conditions</a>
+                </span>
+              </div>
+
+              <button 
+                type="submit" 
+                className="w-full bg-blue-600 text-white py-3 rounded-full font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl"
+              >
+                Sign Up
+              </button>
+
+              <div className="text-center">
+                <span className="text-gray-600">Already have an account? </span>
+                <Link to="/login" className="text-blue-600 hover:text-blue-800 font-semibold">Sign In</Link>
+              </div>
+            </form>
           </div>
         </div>
       </div>

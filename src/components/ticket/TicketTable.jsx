@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import Badge from '../ui/Badge'
 import { getStatusColor, getPriorityColor } from '../../utils/helpers'
+import { useAuth } from '../../hooks/useAuth'
 
 export default function TicketTable({ tickets }) {
+  const { user } = useAuth()
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200">
       <table className="w-full">
@@ -31,9 +33,16 @@ export default function TicketTable({ tickets }) {
               </td>
               <td className="px-6 py-4 text-sm text-gray-600 font-medium">{ticket.createdAt}</td>
               <td className="px-6 py-4">
-                <Link to={`/tickets/${ticket.id}`} className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-bold rounded-lg hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105">
-                  View →
-                </Link>
+                <div className="flex items-center space-x-2">
+                  <Link to={`/tickets/${ticket.id}`} className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-bold rounded-lg hover:from-blue-700 hover:to-indigo-700 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105">
+                    View
+                  </Link>
+                  {user?.role === 'admin' && (
+                    <Link to={`/admin/tickets/${ticket.id}/edit`} className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-bold rounded-lg hover:from-purple-700 hover:to-pink-700 shadow-md hover:shadow-lg transition-all duration-200 transform hover:scale-105">
+                      Edit
+                    </Link>
+                  )}
+                </div>
               </td>
             </tr>
           ))}

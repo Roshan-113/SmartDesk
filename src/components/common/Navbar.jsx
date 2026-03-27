@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
-import { LogOut, User, LayoutDashboard } from 'lucide-react'
+import { LogOut, User } from 'lucide-react'
+import SmartDeskLogo from './SmartDeskLogo'
 
 export default function Navbar() {
   const { user, logout } = useAuth()
@@ -16,11 +17,9 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
-            <Link to={user?.role === 'admin' ? '/admin' : '/dashboard'} className="flex items-center space-x-3 group">
-              <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-2.5 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
-                <LayoutDashboard className="w-7 h-7 text-white" />
-              </div>
-              <span className="text-2xl font-extrabold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">TicketHub</span>
+            <Link to={user?.role === 'admin' ? '/admin/dashboard' : user?.role === 'agent' ? '/agent/dashboard' : '/user/dashboard'} className="flex items-center space-x-3 group">
+              <SmartDeskLogo size="w-12 h-12" />
+              <span className="text-2xl font-extrabold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">SmartDesk</span>
             </Link>
           </div>
 

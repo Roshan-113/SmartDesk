@@ -1,15 +1,17 @@
-import Navbar from './Navbar'
-import Sidebar from './Sidebar'
+import Sidebar from '../common/Sidebar'
+import Header from '../common/Header'
 
 export default function DashboardLayout({ children }) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20">
-      <Navbar />
+    <div className="min-h-screen bg-gray-50">
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 p-8 overflow-x-hidden">
-          <div className="max-w-7xl mx-auto">
-            {children}
+        <main className="flex-1 overflow-x-hidden">
+          <Header />
+          <div className="px-8 pb-8">
+            <div className="max-w-7xl mx-auto">
+              {children}
+            </div>
           </div>
         </main>
       </div>
