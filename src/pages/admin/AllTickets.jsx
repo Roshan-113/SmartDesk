@@ -12,6 +12,7 @@ export default function AllTickets() {
   const tickets = [
     { id: 1001, title: 'Login issue', user: 'John Doe', status: 'open', priority: 'high', assignedTo: 'Agent 1', createdAt: '2024-03-20' },
     { id: 1002, title: 'Payment error', user: 'Jane Smith', status: 'in-progress', priority: 'urgent', assignedTo: 'Agent 2', createdAt: '2024-03-19' },
+    { id: 1003, title: 'Feature request', user: 'Mike Johnson', status: 'open', priority: 'medium', assignedTo: 'Agent 3', createdAt: '2024-03-21' },
   ]
 
   return (
