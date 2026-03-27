@@ -25,7 +25,7 @@ export default function Analytics() {
             </div>
           </div>
 
-          <div className="card">
+          <div className="admin-card">
             <div className="flex items-center space-x-3">
               <div className="p-3 bg-green-100 rounded-lg">
                 <CheckCircle className="w-6 h-6 text-green-600" />
@@ -38,7 +38,7 @@ export default function Analytics() {
             </div>
           </div>
 
-          <div className="card">
+          <div className="admin-card">
             <div className="flex items-center space-x-3">
               <div className="p-3 bg-purple-100 rounded-lg">
                 <Clock className="w-6 h-6 text-purple-600" />
@@ -51,7 +51,7 @@ export default function Analytics() {
             </div>
           </div>
 
-          <div className="card">
+          <div className="admin-card">
             <div className="flex items-center space-x-3">
               <div className="p-3 bg-orange-100 rounded-lg">
                 <AlertCircle className="w-6 h-6 text-orange-600" />
@@ -66,7 +66,7 @@ export default function Analytics() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="card">
+          <div className="admin-card">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Tickets by Priority</h2>
             <div className="space-y-4">
               {[
@@ -91,7 +91,7 @@ export default function Analytics() {
             </div>
           </div>
 
-          <div className="card">
+          <div className="admin-card">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Tickets by Category</h2>
             <div className="space-y-4">
               {[
@@ -117,7 +117,7 @@ export default function Analytics() {
           </div>
         </div>
 
-        <div className="card">
+        <div className="admin-card">
           <h2 className="text-xl font-bold text-gray-800 mb-4">Performance Trends</h2>
           <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
             <p className="text-gray-500">Chart visualization would go here</p>
